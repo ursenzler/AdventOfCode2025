@@ -4,11 +4,10 @@ open System.IO
 open System
 
 module Int =
-    let tryParse: string -> int option =
-        Int32.TryParse
-        >> function
-            | true, num -> Some num
-            | _ -> None
+    let tryParse (value: string) =
+        match Int32.TryParse value with
+        | true, num -> Some num
+        | _ -> None
 
 module Day1 =
     let wrapAround = 100
@@ -16,7 +15,7 @@ module Day1 =
 
     let parseLine =
         function
-        | (str: string) when str.Length > 1 ->
+        | str when str |> String.length > 1 ->
             match str[0], Int.tryParse str[1..] with
             | 'L', Some steps -> Some -steps
             | 'R', Some steps -> Some steps
@@ -29,13 +28,13 @@ module Day1 =
 
     let parseFile = File.ReadLines >> Seq.toList >> List.choose parseLine
 
-    let moveWithWrapAround pos steps = pos + steps |> wrapAroundPosition
+    let executeSteps =
+        List.scan (fun pos steps -> pos + steps |> wrapAroundPosition) startPos
 
-    let countZerosVisited =
-        List.scan moveWithWrapAround startPos
-        >> List.sumBy (fun x -> if x = 0 then 1 else 0)
+    let countZerosVisited = List.sumBy (fun x -> if x = 0 then 1 else 0)
 
-    let solveImpl1 = parseFile >> countZerosVisited
+    let solveImpl1 path =
+        path |> parseFile |> executeSteps |> countZerosVisited
 
     let expandToSingleSteps = List.collect (fun i -> List.replicate (abs i) (sign i))
     let solveImpl2 = parseFile >> expandToSingleSteps >> countZerosVisited
