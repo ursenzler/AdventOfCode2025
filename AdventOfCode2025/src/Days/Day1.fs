@@ -33,15 +33,19 @@ module Day1 =
 
     let countZerosVisited = List.sumBy (fun x -> if x = 0 then 1 else 0)
 
-    let solveImpl1 path =
+    let solve1 path =
         path |> parseFile |> executeSteps |> countZerosVisited
 
     let expandToSingleSteps = List.collect (fun i -> List.replicate (abs i) (sign i))
-    let solveImpl2 = parseFile >> expandToSingleSteps >> countZerosVisited
+
+    let solve2 path =
+        path |> parseFile |> expandToSingleSteps |> executeSteps |> countZerosVisited
 
     let solve () =
         let pathInput1 = Path.Combine(__SOURCE_DIRECTORY__, "Day1Input1.txt")
 
-        let result1 = solveImpl1 pathInput1
+        let result1 = solve1 pathInput1
+        let result2 = solve2 pathInput1
 
         printfn $"Day 1, Part 1: {result1}"
+        printfn $"Day 1, Part 2: {result2}"
