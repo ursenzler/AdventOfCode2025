@@ -3,17 +3,12 @@
 open System.IO
 open System
 
-module Util =
-    let parseInt: string -> option<int> =
+module Int =
+    let tryParse: string -> int option =
         Int32.TryParse
         >> function
             | true, num -> Some num
             | _ -> None
-
-    let boolToInt =
-        function
-        | true -> 1
-        | false -> 0
 
 module Day1 =
     let wrapAround = 100
@@ -21,29 +16,33 @@ module Day1 =
 
     let parseLine =
         function
-        | (str: string) when str.Length > 1 -> str[0], Util.parseInt str[1..]
-        | _ -> ' ', None
-        >> function
+        | (str: string) when str.Length > 1 ->
+            match str[0], Int.tryParse str[1..] with
             | 'L', Some steps -> Some -steps
             | 'R', Some steps -> Some steps
             | _ -> None
+        | _ -> None
 
     let wrapAroundPosition x =
         let rem = x % wrapAround
         rem + if rem < 0 then wrapAround else 0
 
-    let parseFile = File.ReadLines >> Seq.choose parseLine
+    let parseFile = File.ReadLines >> Seq.toList >> List.choose parseLine
 
     let moveWithWrapAround pos steps = pos + steps |> wrapAroundPosition
 
     let countZerosVisited =
-        Seq.scan moveWithWrapAround startPos >> Seq.sumBy ((=) 0 >> Util.boolToInt)
+        List.scan moveWithWrapAround startPos
+        >> List.sumBy (fun x -> if x = 0 then 1 else 0)
 
     let solveImpl1 = parseFile >> countZerosVisited
 
-    let expandToSingleSteps = Seq.collect (fun i -> Seq.replicate (abs i) (sign i))
+    let expandToSingleSteps = List.collect (fun i -> List.replicate (abs i) (sign i))
     let solveImpl2 = parseFile >> expandToSingleSteps >> countZerosVisited
 
     let solve () =
-        printfn $"""%d{solveImpl1 "../Days/data/day01.txt"} ref(1105)"""
-        printfn $"""%d{solveImpl2 "../Days/data/day01.txt"} ref(6599)"""
+        let pathInput1 = Path.Combine(__SOURCE_DIRECTORY__, "Day1Input1.txt")
+
+        let result1 = solveImpl1 pathInput1
+
+        printfn $"Day 1, Part 1: {result1}"
