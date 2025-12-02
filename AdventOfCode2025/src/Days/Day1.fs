@@ -3,12 +3,6 @@
 open System.IO
 open System
 
-module Int =
-    let tryParse (value: string) =
-        match Int32.TryParse value with
-        | true, num -> Some num
-        | _ -> None
-
 module Day1 =
     let wrapAround = 100
     let startPos = 50

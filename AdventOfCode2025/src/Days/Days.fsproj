@@ -6,8 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Utilities.fs" />
     <Compile Include="Day1.fs" />
     <Content Include="Day1Input1.txt" />
+    <Compile Include="Day2.fs" />
+    <Content Include="Day2Input1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharpx.Extras" Version="3.3.0" />
   </ItemGroup>
 
 </Project>
