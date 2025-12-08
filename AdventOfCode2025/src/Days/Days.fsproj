@@ -25,9 +25,13 @@
     <Compile Include="Day7.fs" />
     <Content Include="Day7Example.txt" />
     <Content Include="Day7Input.txt" />
+    <Compile Include="Day8.fs" />
+    <Content Include="Day8Example.txt" />
+    <Content Include="Day8Input.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FSharp.UMX" Version="1.1.0" />
     <PackageReference Include="FSharpx.Extras" Version="3.3.0" />
   </ItemGroup>
 
