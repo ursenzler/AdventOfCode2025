@@ -28,6 +28,9 @@
     <Compile Include="Day8.fs" />
     <Content Include="Day8Example.txt" />
     <Content Include="Day8Input.txt" />
+    <Compile Include="Day9.fs" />
+    <Content Include="Day9Example.txt" />
+    <Content Include="Day9Input.txt" />
   </ItemGroup>
 
   <ItemGroup>
